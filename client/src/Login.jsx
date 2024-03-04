@@ -11,16 +11,16 @@ function Login(){
     const handleSubmit = (e) =>{
         e.preventDefault()
         axios.post('http://localhost:3001/login', { email, password })
-            .then(result => {
-                console.log(result);
-                if (result.data === "Success") {
-                    localStorage.setItem('email', email);
-                    alert("Login Successful !");
-                    navigate('/home');
-                } else {
-                    console.error('Login failed.'); 
-                }
-            })
+        .then(result => {
+          console.log(result);
+          if (result.data.includes("Success")) { 
+              localStorage.setItem('email', email);
+              alert("Login Successful !");
+              navigate('/customer');
+          } else {
+              console.error('Login failed.'); 
+          }
+      })
             .catch(err => console.error(err))
     }
 

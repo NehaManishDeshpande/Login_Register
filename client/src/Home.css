@@ -22,7 +22,7 @@ body{
 }
 
 .nav-list {
-	width: 70%;
+	width: 50%;
 	display: flex;
 	align-items: center;
 	gap: 20px;
@@ -47,11 +47,11 @@ body{
 }
 
 .nav-list li {
-	padding-left: 100px;
+	padding-left: 110px;
 	list-style: none;
 }
 .nav-list2 li {
-	padding: 10px;
+	padding: 30px;
 	list-style: none;
 }
 
@@ -90,7 +90,7 @@ body{
 
 .rightnav {
 	display: inline;
-	width: 30%;
+	width: 50%;
 	text-align: right;
 }
 
@@ -203,8 +203,26 @@ img {
     text-decoration: none;
     font-size: 18px;
 }
+.nav-list2 .dropdown a{
+
+    color: rgb(0, 0, 0);
+	text-align: left;
+    text-decoration: none;
+    font-size: 18px;
+}
 
 .nav-list li a::after {
+
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #e12599;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+
+}
+.nav-list2 li a::after {
 
     content: '';
     width: 0%;
@@ -221,6 +239,13 @@ img {
 }
 
 .nav-list li a:hover::after {
+    width: 100%;
+}
+.nav-list2 .dropdown .dropdown-content a{
+	font-size: 14px;
+}
+
+.nav-list2 li a:hover::after {
     width: 100%;
 }
 
@@ -335,7 +360,7 @@ img {
   }
 
   .dress-card-body {
-	padding:1rem;
+	/* padding:1rem; */
 	background: #fff;
 	border-radius: 0 0 7px 7px;
   }
@@ -442,11 +467,35 @@ img {
   }
   
   .card-button {
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 15px;
-	padding: 9px;
-  }
+    text-align: center;
+    text-transform: uppercase;
+	width: 100%;
+    font-size: 15px;
+    padding: 6px 12px; 
+	margin-bottom: 20px;
+    border: none; 
+    cursor: pointer;
+    outline: none;
+}
+
+.card-button-inner {
+    border-radius: 3px;
+}
+
+.bag-button {
+    background: #f0b0a7;
+    color: white;
+}
+
+.bag-button:hover {
+    background: #e299b9;
+}
+
+.wish-button {
+    border: 1px solid #E06C9F;
+    color: #d8814c;
+}
+
   .card-button a {
 	text-decoration: none;
   }
@@ -464,11 +513,79 @@ img {
   .bag-button :hover{
 	background: #e299b9;
   }
+  .wish-button :hover{
+	color:hotpink;
+  }
   
   .wish-button {
 	border: 1px solid #E06C9F;
 	color: #d8814c;
+	background-color: white;
   }
+
+
   
   /* END OF CARD */
     
+
+
+
+@media screen and (max-width: 1200px) {
+	.logo img {
+	  width: 300px;
+	}
+  }
+  
+  @media screen and (max-width: 992px) {
+	.nav-list {
+	  width: 70%;
+	}
+  }
+  
+  @media screen and (max-width: 768px) {
+	.nav-list {
+	  display: none;
+	}
+  
+	.rightnav {
+	  width: 100%;
+	  text-align: center;
+	  margin-top: 10px;
+	}
+  
+	.nav-list2 {
+	  display: flex;
+	  justify-content: space-around;
+	}
+  
+	.nav-list2 li {
+	  padding: 0;
+	}
+  
+	.dropdown-content {
+	  position: relative;
+	  width: 100%;
+	  left: auto;
+	  transform: none;
+	}
+  
+	.slider {
+	  height: 300px;
+	}
+  
+	.slider .list img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	}
+  
+	.buttons {
+	  top: 40%;
+	}
+  
+	.text-footer {
+	  padding: 15px 0;
+	}
+  }
+  
+  

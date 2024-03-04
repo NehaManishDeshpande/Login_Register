@@ -1,0 +1,87 @@
+.navbar {
+	flex-wrap: nowrap;
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	padding-top: 10px;
+	cursor: pointer;
+}
+
+.text-footer{
+	color: rgb(0, 0, 0);
+}
+
+.nav-list {
+	width: 70%;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	list-style: none;
+}
+.nav-list2 {
+	display: inline-flex;
+	align-items: right;
+	gap: 20px;
+	list-style: none;
+}
+
+.logo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.logo img {
+	padding-left: 20px;
+	width: 450px;
+}
+
+.nav-list li {
+	padding-left: 100px;
+	list-style: none;
+}
+.nav-list2 li {
+	padding: 10px;
+	list-style: none;
+}
+
+.nav-list li a {
+	text-decoration: none;
+	color: rgb(0, 0, 0);
+}
+.nav-list2 li a {
+	text-decoration: none;
+	color: rgb(0, 0, 0);
+}
+
+.nav-list li a:hover {
+	color: grey;
+	/* border-bottom: 2px solid black; */
+}
+.nav-list2 li a:hover {
+	color: grey;
+}
+.nav-list a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%; /* Start from the middle */
+  width: 0;
+  height: 2px;
+  /* background-color: white; */
+  /* transition: width 0.3s ease, left 0.3s ease; Adding a smooth transition for the underline effect */
+  /* transform: translateX(-50%); */
+}
+
+.nav-list a:hover::before {
+  width: 100%; /* Expand to the full width on hover */
+  left: 0;
+}
+
+.rightnav {
+	display: inline;
+	width: 30%;
+	text-align: right;
+}

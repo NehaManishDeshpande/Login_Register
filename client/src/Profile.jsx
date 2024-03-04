@@ -44,9 +44,9 @@ function Profile() {
                         <img src={logo} style={{ height: "100px" }} alt="Logo" />
                     </div>
                     <ul className="nav-list">
-                        <li><a href="/home">HOME</a></li>
+                        <li><a href="/customer">HOME</a></li>
                         <li className="dropdown">
-                            <a href="/women">WOMEN</a>
+                            <a href="/customerWomen">WOMEN</a>
                             <div className="dropdown-content">
                                 <a href="#kurtasandsuits">Kurtas and Suits</a>
                                 <a href="#kurtisandtunics">Kurtis and Tunics</a>
@@ -56,7 +56,7 @@ function Profile() {
                             </div>
                         </li>
                         <li className="dropdown">
-                            <a href="/kid">KID</a>
+                            <a href="/customerKid">KID</a>
                             <div className="dropdown-content">
                                 <a href="#boysclothing">Boys clothing</a>
                                 <a href="#girlsclothing">Girls clothing</a>
