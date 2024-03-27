@@ -3,6 +3,7 @@ import './Login.css';
 import logo from "./assets/images/logo1.png";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logout from "./assets/images/logout.jpg";
 
 function AddCard() {
     const [DressName, setName] = useState('');
@@ -66,6 +67,13 @@ function AddCard() {
         }
     };
     
+
+    function handleLogout() {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            window.location.href = '/';
+        }
+    }
     return (
         <div>
             <body style={{ display: "inline", alignItems: "center", paddingBottom: "50px" }}>
@@ -93,13 +101,15 @@ function AddCard() {
                         </div>
                     </li>
                     </ul>
-                    <div className="rightnav">
-                        <ul className="nav-list2">
-                            <li><a href="/AdminProfile">Profile</a></li>
-                            <li><a href="/AddCard">Add Card</a></li>
-                            <li><a href="/RemoveCard">Remove Card</a></li>
-                        </ul>
-                    </div>
+                    <div className="rightnav" style={{fontSize:'15px'}}>
+                    <ul className="nav-list2">
+                        <li><a href="/AdminProfile">Profile</a></li>
+                        <li><a href="/AddCard">Add Card</a></li>
+                        <li><a href="/RemoveCard">Remove Card</a></li>
+                        <li><a href="/orders">Orders</a></li>
+                        <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
+                    </ul>
+                </div>
                 </nav>
             </body>
             <body style={{ alignItems: "center", justifyContent: "center", display: "flex", paddingBottom: "50px" }}>

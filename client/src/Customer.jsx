@@ -6,41 +6,14 @@ import image3 from "./assets/images/3.jpg";
 import image4 from "./assets/images/4.jpg";
 import image5 from "./assets/images/5.jpg";
 import logout from "./assets/images/logout.jpg";
-import "./Home.css";
 import axios from 'axios';
-import { useCart } from './Components/CartContext'; 
+import { useCart } from './Components/CartContext';
 
 function Customer({ selectedCategories }) {
     const [fetchedCards, setFetchedCards] = useState([]);
-    const [active, setActive] = useState(0);
     const { addToCart } = useCart();
-    const { addToWishlist } = useCart();
-
-
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setActive(prevActive => (prevActive + 1) % 5);
-        }, 3000);
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    const handleNextClick = () => {
-        setActive(prevActive => (prevActive + 1) % 5);
-    };
-
-    const handlePrevClick = () => {
-        setActive(prevActive => (prevActive - 1 + 5) % 5);
-    };
-
-
-    function handleLogout() {
-        const confirmLogout = window.confirm("Are you sure you want to logout?");
-        if (confirmLogout) {
-            window.location.href = '/';
-        }
-    }
-
+    const [active, setActive] = useState(0);
+    const profileData = JSON.parse(localStorage.getItem('profileData'));
     useEffect(() => {
         axios.get('http://localhost:3001/cards', {
             params: {
@@ -54,6 +27,41 @@ function Customer({ selectedCategories }) {
                 console.error('Error fetching data:', error);
             });
     }, [selectedCategories]);
+
+        const handleNextClick = () => {
+                setActive(prevActive => (prevActive + 1) % 5);
+            };
+        
+            const handlePrevClick = () => {
+                setActive(prevActive => (prevActive - 1 + 5) % 5);
+            };
+
+            function addToWishlist(card) {
+                const profileData = JSON.parse(localStorage.getItem('profileData'));
+                if (profileData) {
+                    axios.post('http://localhost:3001/addToWishlist', {
+                        email: profileData.email,
+                        item: card
+                    })
+                    .then(response => {
+                        console.log(response.data.message);
+                        alert("Wishlisted Successfully !");
+                     
+                    })
+                    .catch(error => {
+                        console.error('Error adding item to wishlist:', error);
+                        
+                    });
+                } else {
+                   
+                }
+            }
+    function handleLogout() {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            window.location.href = '/';
+        }
+    }
 
     return (
         <div>
@@ -163,7 +171,7 @@ function Customer({ selectedCategories }) {
                                     </p>
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <button className="card-button bag-button" onClick={() => addToCart(card)}>
+                                            <button className="card-button bag-button" onClick={() => addToCart(card, profileData)}>
                                                 <div className="card-button-inner">cart</div>
                                             </button>
                                         </div>
@@ -181,15 +189,11 @@ function Customer({ selectedCategories }) {
                     ))}
                 </div>
             </div>
-            
-            <footer className="background">
-                <p className="text-footer">
-                    Copyright ©-All rights are reserved
-                </p>
-            </footer>
+
         </div>
-        
+
     );
 }
 
 export default Customer;
+

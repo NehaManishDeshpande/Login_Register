@@ -84,11 +84,12 @@ function Admin({ selectedCategories }) {
                         </div>
                     </li>
                 </ul>
-                <div className="rightnav">
+                <div className="rightnav" style={{fontSize:'15px'}}>
                     <ul className="nav-list2">
                         <li><a href="/AdminProfile">Profile</a></li>
                         <li><a href="/AddCard">Add Card</a></li>
                         <li><a href="/RemoveCard">Remove Card</a></li>
+                        <li><a href="/orders">Orders</a></li>
                         <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
                     </ul>
                 </div>
@@ -176,11 +177,6 @@ function Admin({ selectedCategories }) {
                     ))}
                 </div>
             </div>
-            <footer className="background">
-                <p className="text-footer">
-                    Copyright ©-All rights are reserved
-                </p>
-            </footer>
         </div>
     );
 }

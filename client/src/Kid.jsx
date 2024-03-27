@@ -131,11 +131,6 @@ function Kid({ selectedCategories }) {
                     ))}
                 </div>
             </div>
-            <footer className="background">
-                <p className="text-footer">
-                     Copyright ©-All rights are reserved
-                 </p>
-             </footer>
         </div>
     );
 }

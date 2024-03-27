@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+
 
 const CartContext = createContext();
 
@@ -23,11 +25,23 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
-  const addToCart = (item) => {
+  const addToCart = (item, profileData) => {
     setCartItems([...cartItems, item]);
     console.log("card added to cart", item);
     alert("Added to Cart !");
+  
+    axios.post('http://localhost:3001/addToCart', {
+      email: profileData.email, 
+      item: item
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error adding item to order table:', error);
+    });
   };
+  
 
   const removeFromCart = (itemId) => {
     const updatedCartItems = cartItems.filter(item => item._id !== itemId);

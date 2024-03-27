@@ -9,7 +9,7 @@ import { useCart } from './Components/CartContext';
 function CustomerWomen({ selectedCategories }) {
     const [fetchedCards, setFetchedCards] = useState([]);
     const { addToCart } = useCart();
-    const { addToWishlist } = useCart();
+    const profileData = JSON.parse(localStorage.getItem('profileData'));
 
     useEffect(() => {
         axios.get('http://localhost:3001/cards', {
@@ -24,6 +24,27 @@ function CustomerWomen({ selectedCategories }) {
                 console.error('Error fetching data:', error);
             });
     }, [selectedCategories]);
+
+    function addToWishlist(card) {
+        const profileData = JSON.parse(localStorage.getItem('profileData'));
+        if (profileData) {
+            axios.post('http://localhost:3001/addToWishlist', {
+                email: profileData.email,
+                item: card
+            })
+            .then(response => {
+                console.log(response.data.message);
+                alert("Wishlisted Successfully !");
+                
+            })
+            .catch(error => {
+                console.error('Error adding item to wishlist:', error);
+               
+            });
+        } else {
+           
+        }
+    }
 
     function handleLogout() {
         const confirmLogout = window.confirm("Are you sure you want to logout?");
@@ -111,7 +132,7 @@ function CustomerWomen({ selectedCategories }) {
                                     </p>
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <button className="card-button bag-button" onClick={() => addToCart(card)}>
+                                        <button className="card-button bag-button" onClick={() => addToCart(card, profileData)}>
                                                 <div className="card-button-inner">cart</div>
                                             </button>
                                         </div>
@@ -128,11 +149,6 @@ function CustomerWomen({ selectedCategories }) {
                     ))}
                 </div>
             </div>
-            <footer className="background">
-                <p className="text-footer">
-                     Copyright ©-All rights are reserved
-                 </p>
-             </footer>
         </div>
     );
 }
