@@ -45,6 +45,13 @@ function Admin({ selectedCategories }) {
             });
     }, [selectedCategories]);
 
+    const toggleMenu = () => {
+        const navList2 = document.querySelector('.nav-list2');
+        navList2.classList.toggle('show');
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        hamburgerMenu.classList.toggle('open');
+    };
+
     function handleLogout() {
         const confirmLogout = window.confirm("Are you sure you want to logout?");
         if (confirmLogout) {
@@ -62,7 +69,7 @@ function Admin({ selectedCategories }) {
             </head>
             <nav className="navbar background">
                 <div className="logo">
-                    <img src={logo} style={{ height: "100px" }} alt="Logo" />
+                    <img src={logo}  alt="Logo" />
                 </div>
                 <ul className="nav-list">
                     <li><a href="/Admin">HOME</a></li>
@@ -84,14 +91,20 @@ function Admin({ selectedCategories }) {
                         </div>
                     </li>
                 </ul>
-                <div className="rightnav">
+                <div className="rightnav" style={{fontSize:'15px'}}>
                     <ul className="nav-list2">
                         <li><a href="/AdminProfile">Profile</a></li>
                         <li><a href="/AddCard">Add Card</a></li>
                         <li><a href="/RemoveCard">Remove Card</a></li>
+                        <li><a href="/orders">Orders</a></li>
                         <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
                     </ul>
                 </div>
+                <div className="hamburger" id="hamburger-menu" onClick={toggleMenu}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
             </nav>
 
             <section className="firstsection" style={{ height: "550px" }}>
@@ -140,14 +153,6 @@ function Admin({ selectedCategories }) {
                                         alt={card.DressName}
                                         onError={(e) => { e.target.src = placeholderImage; }} 
                                     />
-                                    <div className="surprise-bubble">
-                                        <span className="dress-card-heart">
-                                            <i className="fa fa-heart"></i>
-                                        </span>
-                                        <a href="#">
-                                            <span>More</span>
-                                        </a>
-                                    </div>
                                 </div>
                                 <div className="dress-card-body">
                                     <h4 className="dress-card-title">{card.DressName}</h4>
@@ -176,11 +181,6 @@ function Admin({ selectedCategories }) {
                     ))}
                 </div>
             </div>
-            <footer className="background">
-                <p className="text-footer">
-                    Copyright ©-All rights are reserved
-                </p>
-            </footer>
         </div>
     );
 }

@@ -3,6 +3,7 @@ import './Login.css';
 import logo from "./assets/images/logo1.png";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logout from "./assets/images/logout.jpg";
 
 function AdminProfile() {
     const [name, setName] = useState('');
@@ -36,12 +37,25 @@ function AdminProfile() {
             .catch(err => console.error('Error saving profile:', err));
     };
 
+    const toggleMenu = () => {
+        const navList2 = document.querySelector('.nav-list2');
+        navList2.classList.toggle('show');
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        hamburgerMenu.classList.toggle('open');
+    };
+
+    function handleLogout() {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            window.location.href = '/';
+        }
+    }
     return (
         <div>
             <body style={{ display: "inline", alignItems: "center", paddingBottom: "50px" }}>
                 <nav className="navbar background" style={{ alignItems: "normal", paddingBottom: "50px" }}>
                     <div className="logo">
-                        <img src={logo} style={{ height: "100px" }} alt="Logo" />
+                        <img src={logo}  alt="Logo" />
                     </div>
                     <ul className="nav-list">
                     <li><a href="/Admin">HOME</a></li>
@@ -63,12 +77,19 @@ function AdminProfile() {
                         </div>
                     </li>
                     </ul>
-                    <div className="rightnav">
-                        <ul className="nav-list2">
-                            <li><a href="/AdminProfile">Profile</a></li>
-                            <li><a href="/AddCard">Add Card</a></li>
-                            <li><a href="/RemoveCard">Remove Card</a></li>
-                        </ul>
+                    <div className="rightnav" style={{fontSize:'15px'}}>
+                    <ul className="nav-list2">
+                        <li><a href="/AdminProfile">Profile</a></li>
+                        <li><a href="/AddCard">Add Card</a></li>
+                        <li><a href="/RemoveCard">Remove Card</a></li>
+                        <li><a href="/orders">Orders</a></li>
+                        <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
+                    </ul>
+                </div>
+                <div className="hamburger" id="hamburger-menu" onClick={toggleMenu}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </nav>
             </body>

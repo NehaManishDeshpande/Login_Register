@@ -2,37 +2,146 @@ import React, { useState, useEffect } from 'react';
 import logo from "./assets/images/logo1.png";
 import logo2 from "./assets/images/logo2.png";
 import "./Home.css";
-import { useCart } from './Components/CartContext';
+import BillDetails from './Components/BillDetails';
+import logout from "./assets/images/logout.jpg";
+import axios from 'axios';
 
 function Cart() {
-  const { cartItems , setCartItems} = useCart();
-  console.log(cartItems);
-
- 
+  const [cartItems, setCartItems] = useState([]);
   const [totalBill, setTotalBill] = useState(0);
+  const [address, setAddress] = useState('');
+  const [showBill, setShowBill] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const profileData = JSON.parse(localStorage.getItem('profileData'));
 
   useEffect(() => {
-    calculateTotalBill();
-  }, [cartItems]);
+    if (profileData) {
+      fetchCustomerInfo(profileData.name, profileData.address);
+    }
+  }, []);
 
-  const calculateTotalBill = () => {
-    let total = 0;
-    cartItems.forEach(item => {
-      total += parseFloat(item.Prize);
+
+  const fetchCustomerInfo = (customerName, address) => {
+    
+    axios.get('http://localhost:3001/orderInfo', {
+        params: {
+            customerName: customerName,
+            address: address
+        }
+    })
+    .then(response => {
+        const order = response.data;
+        console.log(order);
+        if (order) {
+            
+            fetchCartItems(order._id); 
+            
+            setAddress(order.address);
+        } else {
+            console.log('Order not found for customer:', customerName);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching customer order information:', error);
     });
-    setTotalBill(total.toFixed(2)); // Ensure the total is rounded to 2 decimal places
+};
+
+
+const fetchCartItems = (orderId) => {
+  
+  console.log('Fetching cart items for orderId:', orderId);
+
+  axios.get('http://localhost:3001/orderItems', {
+      params: {
+          orderId: orderId
+      }
+  })
+  .then(response => {
+      const cartItems = response.data;
+      console.log("cartitems", cartItems);
+      
+      setCartItems(cartItems);
+      
+      calculateTotalBill(cartItems);
+  })
+  .catch(error => {
+      console.error('Error fetching cart items:', error);
+  });
+};
+
+
+const handleProceedToBuy = () => {
+  
+  const calculatedTotalBill = calculateTotalBill(cartItems);
+  
+  setTotalBill(calculatedTotalBill);
+
+  setShowBill(true);
+
+
+  const orderData = {
+    customerName: profileData.name,
+    address: address,
+    items: cartItems,
+    totalBill: calculatedTotalBill 
   };
+
+  axios.post('http://localhost:3001/placeOrder', orderData) 
+    .then(response => {
+      alert("Order Placed Successfully");
+      console.log('Order placed successfully:', response.data);
+    })
+    .catch(error => {
+      console.error('Error placing order:', error);
+    });
+};
+
+
+const calculateTotalBill = (items) => {
+  let total = 0;
+  items.forEach(item => {
+    const itemPrize = parseFloat(item.Prize.replace(/\D/g, ''));
+    if (!isNaN(itemPrize)) {
+      total += itemPrize;
+    } else {
+      console.log("Invalid Prize for item:", item);
+    }
+  });
+  return total.toFixed(2);
+};
+
+
+const removeFromCart = (itemId) => {
+
+  const updatedCartItems = cartItems.filter(item => item._id !== itemId);
+  setCartItems(updatedCartItems);
+  calculateTotalBill(updatedCartItems);
+  alert("Card Removed Successfully !");
+
+
+  axios.delete('http://localhost:3001/removeFromCart', {
+    data: {
+      email: profileData.email, 
+      itemId: itemId
+    }
+  })
+    .then(response => {
+      console.log('Item removed successfully from order:', response.data);
+    })
+    .catch(error => {
+      console.error('Error removing item from order:', error);
+    });
+};
+
+
   
 
-  const handleProceedToBuy = () => {
-    alert(`Total Bill: Rs.${totalBill}`);
-  };
-
-  const removeFromCart = (itemId) => {
-    const updatedCartItems = cartItems.filter(item => item._id !== itemId);
-    setCartItems(updatedCartItems); 
-    alert("Card Removed Successfully !");
-  };
+  function handleLogout() {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      window.location.href = '/';
+    }
+  }
 
   return (
     <div>
@@ -44,7 +153,7 @@ function Cart() {
       </head>
       <nav className="navbar background">
         <div className="logo">
-          <img src={logo} style={{ height: "100px" }} alt="Logo" />
+          <img src={logo} alt="Logo" />
         </div>
         <ul className="nav-list">
           <li><a href="/customer">HOME</a></li>
@@ -71,6 +180,7 @@ function Cart() {
             <li><a href="/profile">Profile</a></li>
             <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/cart">Cart</a></li>
+            <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
           </ul>
         </div>
       </nav>
@@ -91,27 +201,19 @@ function Cart() {
                     className="dress-card-img-top"
                     src={`http://localhost:3001/${item.image}`}
                     alt={item.DressName}
-                    onError={(e) => { e.target.src = placeholderImage; }}
                   />
-                  <div className="surprise-bubble">
-                    <span className="dress-card-heart">
-                      <i className="fa fa-heart"></i>
-                    </span>
-                    <a href="#">
-                      <span>More</span>
-                    </a>
-                  </div>
+                  
                 </div>
                 <div className="dress-card-body">
                   <h4 className="dress-card-title">{item.DressName}</h4>
                   <p className="dress-card-para">{item.discription}</p>
                   <p className="dress-card-para">
-                    <span className="dress-card-price">Rs.{item.Prize}&ensp;</span>
-                    <span className="dress-card-crossed">Rs.{item.crossed}</span>
+                    <span className="dress-card-price">{item.Prize}&ensp;</span>
+                    <span className="dress-card-crossed">{item.crossed}</span>
                     <span className="dress-card-off">&ensp;({item.off}% OFF)</span>
                   </p>
                   <div className="row">
-                    <div className="col-md-12 text-center"> 
+                    <div className="col-md-12 text-center">
                       <button className="card-button bag-button" onClick={() => removeFromCart(item._id)}>
                         <div className="card-button-inner">Remove</div>
                       </button>
@@ -124,21 +226,21 @@ function Cart() {
         </div>
       </div>
       <div className="row justify-content-center">
-  <button
-    // className="btn btn-primary"
-    style={{ backgroundColor: '#f7b5c1', textAlign: 'center', width: '400px', color: 'white'}}
-    onClick={handleProceedToBuy}
-  >
-    PROCEED TO BUY
-  </button>
-</div>
+        <button
+          style={{ backgroundColor: '#f7b5c1', textAlign: 'center', width: '400px', color: 'white' }}
+          onClick={handleProceedToBuy}
+        >
+          PROCEED TO BUY
+        </button>
+      </div>
 
-      <footer className="background">
-        <p className="text-footer">
-          Copyright ©-All rights are reserved
-        </p>
-      </footer>
+
+      {showBill && <BillDetails totalBill={totalBill} address={address} />}
+
+
     </div>
+
+
   );
 }
 

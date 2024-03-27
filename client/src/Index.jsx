@@ -13,6 +13,7 @@ function Index({ selectedCategories }) {
     const [active, setActive] = useState(0);
 
 
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             setActive(prevActive => (prevActive + 1) % 5);
@@ -29,6 +30,12 @@ function Index({ selectedCategories }) {
         setActive(prevActive => (prevActive - 1 + 5) % 5);
     };
 
+    const toggleMenu = () => {
+        const navList2 = document.querySelector('.nav-list2');
+        navList2.classList.toggle('show');
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        hamburgerMenu.classList.toggle('open');
+    };
 
     useEffect(() => {
         axios.get('http://localhost:3001/cards', {
@@ -53,13 +60,14 @@ function Index({ selectedCategories }) {
             <head>
                 <title>Index Page</title>
                 <link rel="stylesheet" href="Home.css" />
+               
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
             </head>
             <body style={{ display: "inline", alignItems: "center", paddingBottom: "50px" }}>
                 <nav className="navbar background">
                     <div className="logo">
-                        <img src={logo} style={{ height: "100px" }} alt="Logo" />
+                        <img src={logo} alt="Logo" />
                     </div>
                     <ul className="nav-list">
                         <li><a href="/">HOME</a></li>
@@ -94,11 +102,19 @@ function Index({ selectedCategories }) {
                                 <a href="#register">SignUp</a>
                                 <div className="dropdown-content">
                                     <a href="/register">Customer SignUp</a>
-                                    <a href="/AdminRegister">Admin SignUp</a>
+                                    {/* <a href="/AdminRegister">Admin SignUp</a> */}
                                 </div>
                             </li>
                         </ul>
                     </div>
+
+                    <div className="hamburger" id="hamburger-menu" onClick={toggleMenu}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+
                 </nav>
 
                 <section className="firstsection" style={{ height: "550px" }}>
@@ -146,14 +162,6 @@ function Index({ selectedCategories }) {
                                             alt={card.DressName}
                                             onError={(e) => { e.target.src = placeholderImage; }}
                                         />
-                                        <div className="surprise-bubble">
-                                            <span className="dress-card-heart">
-                                                <i className="fa fa-heart"></i>
-                                            </span>
-                                            <a href="#">
-                                                <span>More</span>
-                                            </a>
-                                        </div>
                                     </div>
                                     <div className="dress-card-body">
                                         <h4 className="dress-card-title">{card.DressName}</h4>
@@ -183,15 +191,20 @@ function Index({ selectedCategories }) {
                         ))}
                     </div>
                 </div>
-                <footer className="background">
-                    <p className="text-footer">
-                        Copyright ©-All rights are reserved
-                    </p>
-                </footer>
+                <ins className="adsbygoogle"
+                     style={{ display: "block" }}
+                     data-ad-client="ca-pub-3741717086350527"
+                     data-ad-slot="6858242109"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741717086350527"
+                        crossorigin="anonymous"></script>
+                <script>
+                    {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+                </script>
             </body>
         </div>
     );
 }
 
 export default Index;
-

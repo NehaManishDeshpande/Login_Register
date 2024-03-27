@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CartProvider } from './Components/CartContext';
@@ -13,15 +13,16 @@ import CustomerKid from './CustomerKid';
 import CustomerWomen from './CustomerWomen';
 import Women from './Women';
 import AdminWomen from './AdminWomen';
-import Home from './Home';
 import Kid from './Kid';
 import AdminKid from './AdminKid';
 import Profile from './Profile';
 import AdminProfile from './AdminProfile';
 import AddCard from './AddCard';
 import RemoveCard from './RemoveCard';
+import Orders from './Orders';
 import Cart from './Cart';
 import Wishlist from './Wishlist';
+import Footer from './Components/Footer'; 
 
 function App() {
   return (
@@ -34,7 +35,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/AdminLogin" element={<AdminLogin />} />
-          <Route path="/home" element={<Home />}/>
           <Route path="/admin" element={<Admin />}/>
           <Route path="/customer" element={<Customer />} />
           <Route path="/customerWomen" element={<CustomerWomen />} />
@@ -49,8 +49,11 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/AddCard" element={<AddCard />} />
           <Route path="/RemoveCard" element={<RemoveCard />} />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </BrowserRouter>
+
+      <Footer />
     </CartProvider>
   );
 }

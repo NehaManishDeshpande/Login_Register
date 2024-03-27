@@ -18,6 +18,7 @@ function AdminLogin(){
                   alert("Login Successful !");
                   navigate('/Admin');
               } else {
+                alert("Invalid Login Credentials !");
                   console.error('Login failed.'); 
               }
           })

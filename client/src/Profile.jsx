@@ -3,6 +3,7 @@ import './Login.css';
 import logo from "./assets/images/logo1.png";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logout from "./assets/images/logout.jpg";
 
 function Profile() {
     const [name, setName] = useState('');
@@ -17,8 +18,10 @@ function Profile() {
         console.log("Profile component mounted");
         const storedName = localStorage.getItem('name');
         const storedEmail = localStorage.getItem('email');
+        const storedAddress = localStorage.getItem('address');
         console.log("Stored name:", storedName);
         console.log("Stored email:", storedEmail);
+        console.log("Stored address:", storedAddress);
         if (storedName && storedEmail) {
             setName(storedName);
             setEmail(storedEmail);
@@ -30,18 +33,43 @@ function Profile() {
         axios.post('http://localhost:3001/register', { name, email, dob, age, phoneNumber, address })
             .then(result => {
                 console.log(result);
+                localStorage.setItem('address', address); 
+               
+                const profileData = { name, email, address };
+                localStorage.setItem('profileData', JSON.stringify(profileData));
+                
+                axios.post('http://localhost:3001/placeOrder', { customerName: name, address, items: [], totalBill: 0 })
+                    .then(orderResult => {
+                        console.log('Order placed successfully:', orderResult.data);
+                    })
+                    .catch(orderError => console.error('Error placing order:', orderError));
                 alert("Profile updated successfully!");
                 navigate('/profile');
             })
             .catch(err => console.error('Error saving profile:', err));
     };
+    
+    const toggleMenu = () => {
+        const navList2 = document.querySelector('.nav-list2');
+        navList2.classList.toggle('show');
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        hamburgerMenu.classList.toggle('open');
+    };
+    
+
+    function handleLogout() {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            window.location.href = '/';
+        }
+    }
 
     return (
         <div>
             <body style={{ display: "inline", alignItems: "center", paddingBottom: "50px" }}>
                 <nav className="navbar background" style={{ alignItems: "normal", paddingBottom: "50px" }}>
                     <div className="logo">
-                        <img src={logo} style={{ height: "100px" }} alt="Logo" />
+                        <img src={logo}  alt="Logo" />
                     </div>
                     <ul className="nav-list">
                         <li><a href="/customer">HOME</a></li>
@@ -68,7 +96,14 @@ function Profile() {
                             <li><a href="/profile">Profile</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/cart">Cart</a></li>
+                            <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
                         </ul>
+                    </div>
+
+                    <div className="hamburger" id="hamburger-menu" onClick={toggleMenu}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </nav>
             </body>
@@ -181,4 +216,10 @@ function Profile() {
 }
 
 export default Profile;
+
+
+
+
+
+
 

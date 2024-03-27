@@ -1,12 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import logo from "./assets/images/logo1.png";
 import logo2 from "./assets/images/logo2.png";
 import "./Home.css";
-import { useCart } from './Components/CartContext';
+import logout from "./assets/images/logout.jpg";
 
 function Wishlist() {
-  const { wishlistItems, removeFromWishlist } = useCart();
-  console.log(wishlistItems);
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [profileData, setProfileData] = useState(null); 
+
+  useEffect(() => {
+    const storedProfileData = JSON.parse(localStorage.getItem('profileData'));
+    setProfileData(storedProfileData); 
+
+    if (storedProfileData) {
+      fetchWishlistInfo(storedProfileData.name, storedProfileData.address);
+    }
+  }, []);
+
+  const fetchWishlistInfo = async (customerName, address) => {
+    try {
+      const response = await axios.get('http://localhost:3001/wishlistItems', {
+        params: {
+          customerName: customerName,
+          address: address
+        }
+      });
+      setWishlistItems(response.data);
+    } catch (error) {
+      console.error('Error fetching wishlist items:', error);
+    }
+  };
+
+  const removeFromWishlist = async (itemId) => {
+    try {
+      // Make a DELETE request to the server to remove the item from the wishlist table
+      await axios.delete(`http://localhost:3001/removeFromWishlist`, {
+        data: {
+          email: profileData.email,
+          itemId: itemId
+        }
+      });
+
+      const updatedWishlistItems = wishlistItems.filter(item => item._id !== itemId);
+      setWishlistItems(updatedWishlistItems);
+
+      alert("Removed Successfully from Wishlist");
+      console.log('Item removed from the wishlist table:', itemId);
+    } catch (error) {
+      console.error('Error removing item from the wishlist table:', error);
+    
+    }
+  };
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      window.location.href = '/';
+    }
+  };
 
   return (
     <div>
@@ -18,7 +70,7 @@ function Wishlist() {
       </head>
       <nav className="navbar background">
         <div className="logo">
-          <img src={logo} style={{ height: "100px" }} alt="Logo" />
+          <img src={logo}  alt="Logo" />
         </div>
         <ul className="nav-list">
           <li><a href="/customer">HOME</a></li>
@@ -45,6 +97,7 @@ function Wishlist() {
             <li><a href="/profile">Profile</a></li>
             <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/cart">Cart</a></li>
+            <button style={{ backgroundColor: "white" }} onClick={handleLogout}><img style={{ height: "50px", width: "50px" }} src={logout} /></button>
           </ul>
         </div>
       </nav>
@@ -67,14 +120,7 @@ function Wishlist() {
                     alt={item.DressName}
                     onError={(e) => { e.target.src = placeholderImage; }}
                   />
-                  <div className="surprise-bubble">
-                    <span className="dress-card-heart">
-                      <i className="fa fa-heart"></i>
-                    </span>
-                    <a href="#">
-                      <span>More</span>
-                    </a>
-                  </div>
+                  
                 </div>
                 <div className="dress-card-body">
                   <h4 className="dress-card-title">{item.DressName}</h4>
@@ -85,10 +131,12 @@ function Wishlist() {
                     <span className="dress-card-off">&ensp;({item.off}% OFF)</span>
                   </p>
                   <div className="row">
-                    <div className="col-md-12 text-center"> 
-                      <button className="card-button bag-button" onClick={() => removeFromWishlist(item._id)}>
+                    <div className="col-md-12 text-center">
+                      <button className="card-button bag-button" onClick={() => removeFromWishlist(item._id, profileData)}>
                         <div className="card-button-inner">Remove</div>
                       </button>
+
+
                     </div>
                   </div>
                 </div>
@@ -97,13 +145,9 @@ function Wishlist() {
           ))}
         </div>
       </div>
-      <footer className="background">
-        <p className="text-footer">
-          Copyright ©-All rights are reserved
-        </p>
-      </footer>
     </div>
   );
 }
 
 export default Wishlist;
+
