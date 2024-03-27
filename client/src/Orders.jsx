@@ -46,7 +46,7 @@ function Orders() {
     <div>
       <nav className="navbar background">
         <div className="logo">
-          <img src={logo} style={{ height: "100px" }} alt="Logo" />
+          <img src={logo}  alt="Logo" />
         </div>
         <ul className="nav-list">
           <li><a href="/Admin">HOME</a></li>

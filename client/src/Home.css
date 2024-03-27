@@ -43,7 +43,7 @@ body{
 
 .logo img {
 	padding-left: 20px;
-	width: 450px;
+	width: 100%;
 }
 
 .nav-list li {
@@ -97,7 +97,6 @@ body{
 .firstsection {
 	padding-top: 30px;
 	background-color: #FADDE1;
-	height: 550px;
 }
 
 .box-main {
@@ -276,7 +275,7 @@ img {
 /* FOR SLIDE SHOW */
 
 .slider{
-    width: 1300px;
+    width: 100%;
     max-width: 100vw;
     height: 500px;
     margin: auto;
@@ -366,7 +365,7 @@ img {
   }
   
   .dress-card-title {
-	line-height: 0.5rem;
+	/* line-height: 0.5rem; */
   }
 
 .dress-card-heart {
@@ -385,6 +384,17 @@ img {
 
 .dress-card-heart i {
     font-size: 18px; 
+}
+
+/* Add transition property to smoothly change scale */
+.dress-card {
+    border-radius: 14px;
+    transition: transform 0.3s ease;
+}
+
+/* Scale up the card when hovered */
+.dress-card:hover {
+    transform: scale(1.05);
 }
 
   
@@ -530,22 +540,67 @@ img {
 
 
 
-@media screen and (max-width: 1200px) {
-	.logo img {
-	  width: 300px;
-	}
-  }
+  @media screen and (max-width: 1200px) {
+    .container {
+        padding-top: 15px; /* Adjust spacing */
+    }
   
-  @media screen and (max-width: 992px) {
-	.nav-list {
-	  width: 70%;
+    .col-md-3 {
+        flex: 0 0 25%; /* Adjust column width */
+        max-width: 25%; /* Adjust column width */
+    }
+  
+    .dress-card {
+        border-radius: 10px; /* Adjust card border radius */
+    }
+	.dress-card-title {
+        font-size: 16px; /* Adjust font size */
+        overflow: hidden; /* Prevent text overflow */
+        white-space: nowrap; /* Prevent text wrapping */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
+
+	.card-button-inner{
+		font-size: 10px;
 	}
-  }
+}
+
+@media screen and (max-width: 992px) {
+    .container {
+        padding-top: 15px; /* Adjust spacing */
+    }
+  
+    .col-md-3 {
+        flex: 0 0 33.333%; /* Adjust column width */
+        max-width: 33.333%; /* Adjust column width */
+    }
+  
+    .dress-card {
+        border-radius: 10px; /* Adjust card border radius */
+    }
+	.dress-card-title {
+        font-size: 14px; /* Adjust font size */
+        overflow: hidden; /* Prevent text overflow */
+        white-space: nowrap; /* Prevent text wrapping */
+        text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    }
+}
+
   
   @media screen and (max-width: 768px) {
-	.nav-list {
-	  display: none;
+	.nav{
+		padding-bottom: 0;
 	}
+	.nav-list .dropdown  a {
+		gap: 0;
+		font-size: 14px; /* Adjust the font size as per your preference */
+	  }
+	.nav-list li {
+		/* padding-right: 70px; */
+		padding-left: 0;
+		gap: 0;
+		font-size: 14px; /* Adjust the font size as per your preference */
+	  }
   
 	.rightnav {
 	  width: 100%;
@@ -587,5 +642,50 @@ img {
 	  padding: 15px 0;
 	}
   }
-  
-  
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger div {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: transform 0.4s ease;
+}
+
+.hamburger.open div:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.open div:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open div:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+
+.nav-list2 {
+	text-align: left;
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-list2.show {
+    display: block;
+}
+
+
+
+

@@ -70,7 +70,7 @@ function Wishlist() {
       </head>
       <nav className="navbar background">
         <div className="logo">
-          <img src={logo} style={{ height: "100px" }} alt="Logo" />
+          <img src={logo}  alt="Logo" />
         </div>
         <ul className="nav-list">
           <li><a href="/customer">HOME</a></li>
@@ -120,14 +120,7 @@ function Wishlist() {
                     alt={item.DressName}
                     onError={(e) => { e.target.src = placeholderImage; }}
                   />
-                  <div className="surprise-bubble">
-                    <span className="dress-card-heart">
-                      <i className="fa fa-heart"></i>
-                    </span>
-                    <a href="#">
-                      <span>More</span>
-                    </a>
-                  </div>
+                  
                 </div>
                 <div className="dress-card-body">
                   <h4 className="dress-card-title">{item.DressName}</h4>

@@ -7,6 +7,8 @@ const AdminModel = require('./models/Admin');
 const CardModel = require('./models/Card');
 const OrderModel = require('./models/order');
 
+require("dotenv").config();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -404,6 +406,6 @@ app.delete('/markOrderCompleted/:orderId', (req, res) => {
 });
 
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log("server is running");
 }); 

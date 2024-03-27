@@ -88,6 +88,7 @@ const handleProceedToBuy = () => {
 
   axios.post('http://localhost:3001/placeOrder', orderData) 
     .then(response => {
+      alert("Order Placed Successfully");
       console.log('Order placed successfully:', response.data);
     })
     .catch(error => {
@@ -152,7 +153,7 @@ const removeFromCart = (itemId) => {
       </head>
       <nav className="navbar background">
         <div className="logo">
-          <img src={logo} style={{ height: "100px" }} alt="Logo" />
+          <img src={logo} alt="Logo" />
         </div>
         <ul className="nav-list">
           <li><a href="/customer">HOME</a></li>
@@ -201,14 +202,7 @@ const removeFromCart = (itemId) => {
                     src={`http://localhost:3001/${item.image}`}
                     alt={item.DressName}
                   />
-                  <div className="surprise-bubble">
-                    <span className="dress-card-heart">
-                      <i className="fa fa-heart"></i>
-                    </span>
-                    <a href="#">
-                      <span>More</span>
-                    </a>
-                  </div>
+                  
                 </div>
                 <div className="dress-card-body">
                   <h4 className="dress-card-title">{item.DressName}</h4>
